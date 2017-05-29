@@ -55,6 +55,8 @@ CMFCDlg::CMFCDlg(CWnd* pParent /*=NULL*/)
 	, m_alpha(0)
 	, m_beta(0)
 	, m_gamma(0)
+	, m_day(0)
+	, m_time(0)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -187,19 +189,37 @@ void CMFCDlg::OnTimer(UINT_PTR nIDEvent)
 	// TODO: Add your message handler code here and/or call default
 
 	CDialogEx::OnTimer(nIDEvent);
+	glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
+	glClear(GL_COLOR_BUFFER_BIT);	// using double buffer and RGB color model
+	
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	
+	glRotatef(m_alpha , 1.f, 0.f, 0.f);
+	glRotatef(m_gamma , 0.f, 0.f, 1.f);
 
-	glClear(GL_COLOR_BUFFER_BIT);
-
+	//glRotatef(30, 1.f, 1.f, 1.f);
 	glPushMatrix();
-	glRotatef(m_alpha, 1.f, 0.f, 0.f);
-	glRotatef(m_beta, 0.f, 1.f, 0.f);
-	glRotatef(m_gamma, 0.f, 0.f, 1.f);
-
+		glBegin(GL_LINES);
+			glColor3f(1.0, 0.0, 0.0);
+			glVertex3f(0.0, 0.0, 0.0);
+			glVertex3f(1.0, 0.0, 0.0);
+		glEnd();
+		glBegin(GL_LINES);
+			glColor3f(0.0, 1.0, 0.0);
+			glVertex3f(0.0, 0.0, 0.0);
+			glVertex3f(0.0, 1.0, 0.0);
+		glEnd();
+		glBegin(GL_LINES);
+			glColor3f(0.0, 0.0, 1.0);
+			glVertex3f(0.0, 0.0, 0.0);
+			glVertex3f(0.0, 0.0, 1.0);
+		glEnd();
+	glPopMatrix();
+	
 	GLUquadricObj *pQuad;
 	pQuad = gluNewQuadric();
-	//gluQuadricDrawStyle(pQuad, GLU_FILL);
 	gluQuadricDrawStyle(pQuad, GLU_LINE);
-
 	/**
 	*
 	* gluCylinder make cylinder 
@@ -207,34 +227,41 @@ void CMFCDlg::OnTimer(UINT_PTR nIDEvent)
 	* @param baseRadius : radius from current point(base point)
 	* @param topRadius : radius from current point + height(z axis), (top point)
 	* @param height : length of cylinder from basePoint to TopPoint
-	* @param slices : # of vertical lines
+	* @param slices : # of vertical lines 
 	* @param stacks : # of horizontal lines
 	*/
-	// TODO : test cylindrical image
-	
-	int slices = 30;
-	int stacks = 20;
+	/// Cylindrical illustration
+	int slices = 30;	// horizontal slices
+	int stacks = 20;	// # of vertical stack
 	
 	glPushMatrix();
-	glRotated(90.f, 0.f, 1.f, 0.f);
-	gluCylinder(pQuad, 0.3, 0.3, 0.3, slices, stacks);
-	glRotated(-90.f, 0.f, 1.f, 0.f);
+		glRotated(90.f, 0.f, 1.f, 0.f);
+		gluCylinder(pQuad, 0.3, 0.3, 0.3, slices, stacks);
+		glRotated(-90.f, 0.f, 1.f, 0.f);
 	glPopMatrix();
 	
 	glPushMatrix();
-	glRotated(90.f, 0.f, 1.f, 0.f);
-	glTranslatef(0.f, 0.f, -0.3f);
-	gluCylinder(pQuad, 0.3, 0.3, 0.3, slices, stacks);
-	glTranslatef(0.f, 0.f, 0.3f);
-	glRotated(-90.f, 0.f, 1.f, 0.f);
+		glLoadIdentity();
+		glRotated(90.f, 0.f, 1.f, 0.f);
+		glTranslatef(0.f, 0.f, -0.3f);
+		gluCylinder(pQuad, 0.3, 0.3, 0.3, slices, stacks);
 	glPopMatrix();
+	/// Cylinder end
 	
-
-	// make capsule both side hat using hemisphere
-	int p = 30;
-	int q = 20;
-	double PI = 3.14159265;
-	float R = 0.3;
+	glEnable(GL_POINT_SMOOTH);
+	glPointSize(3.f);
+	glRotated(90.f, 0.f, 1.f, 0.f);
+	glBegin(GL_POINTS);
+		glColor3f(1.f, 0.f, 0.f);
+		glVertex3f(0.3f, 0.3f, 0.3f);
+	glEnd();
+	glRotated(-90.f, 0.f, 1.f, 0.f);
+	
+	glColor3f(1.f, 1.f, 1.f);
+	/// Hemisphere at both cylcinder's end position
+	int p = 20;		// # of points consist of circle
+	int q = 20;		// # of vertical stact
+	float R = 0.3;	// radius of hemisphere
 
 	glRotatef(90.f, 0.f, 0.f, 1.f);
 	glTranslatef(0.f, 0.3f, 0.f);
@@ -406,11 +433,12 @@ void CMFCDlg::OnTimer(UINT_PTR nIDEvent)
 	}
 	glTranslatef(0.f, 0.f, -0.6f);
 	glRotatef(-90.f, 1.f, 0.f, 0.f);
-	*/
+	
 
 	gluDeleteQuadric(pQuad);
 	glPopMatrix();
-	
+	*/
+
 	//화면 업데이트
 	SwapBuffers(m_pDC->GetSafeHdc());
 }
@@ -464,6 +492,7 @@ BOOL CMFCDlg::GetRenderingContext()
 	HGLRC CompHRC = wglCreateContextAttribsARB(m_pDC->GetSafeHdc(), 0, attribs);
 	if (CompHRC && wglMakeCurrent(m_pDC->GetSafeHdc(), CompHRC))
 		m_hRC = CompHRC;
+	glClearColor(0.f, 0.f, 0.f, 1.f);
 
 	return TRUE;
 }
@@ -612,4 +641,268 @@ BOOL CMFCDlg::PreTranslateMessage(MSG* pMsg)
 
 
 	return CDialogEx::PreTranslateMessage(pMsg);
+}
+
+void CMFCDlg::ch_drawCapsule()
+{
+	glClear(GL_COLOR_BUFFER_BIT);	// using double buffer and RGB color model
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	glRotatef(m_alpha, 1.f, 0.f, 0.f);
+	glRotatef(m_beta, 0.f, 1.f, 0.f);
+	glRotatef(m_gamma, 0.f, 0.f, 1.f);
+
+	//glRotatef(30, 1.f, 1.f, 1.f);
+	glPushMatrix();
+	glBegin(GL_LINES);
+	glColor3f(1.0, 0.0, 0.0);
+	glVertex3f(0.0, 0.0, 0.0);
+	glVertex3f(1.0, 0.0, 0.0);
+	glEnd();
+	glBegin(GL_LINES);
+	glColor3f(0.0, 1.0, 0.0);
+	glVertex3f(0.0, 0.0, 0.0);
+	glVertex3f(0.0, 1.0, 0.0);
+	glEnd();
+	glBegin(GL_LINES);
+	glColor3f(0.0, 0.0, 1.0);
+	glVertex3f(0.0, 0.0, 0.0);
+	glVertex3f(0.0, 0.0, 1.0);
+	glEnd();
+	glPopMatrix();
+
+	GLUquadricObj *pQuad;
+	pQuad = gluNewQuadric();
+	gluQuadricDrawStyle(pQuad, GLU_LINE);
+	/**
+	*
+	* gluCylinder make cylinder
+	*
+	* @param baseRadius : radius from current point(base point)
+	* @param topRadius : radius from current point + height(z axis), (top point)
+	* @param height : length of cylinder from basePoint to TopPoint
+	* @param slices : # of vertical lines
+	* @param stacks : # of horizontal lines
+	*/
+	/// Cylindrical illustration
+	int slices = 30;	// horizontal slices
+	int stacks = 20;	// # of vertical stack
+
+	glPushMatrix();
+	glRotated(90.f, 0.f, 1.f, 0.f);
+	gluCylinder(pQuad, 0.3, 0.3, 0.3, slices, stacks);
+	glRotated(-90.f, 0.f, 1.f, 0.f);
+	glPopMatrix();
+
+	glPushMatrix();
+	glLoadIdentity();
+	glRotated(90.f, 0.f, 1.f, 0.f);
+	glTranslatef(0.f, 0.f, -0.3f);
+	gluCylinder(pQuad, 0.3, 0.3, 0.3, slices, stacks);
+	glPopMatrix();
+	/// Cylinder end
+
+	glEnable(GL_POINT_SMOOTH);
+	glPointSize(3.f);
+	glPushMatrix();
+	gluSphere(pQuad, 0.3, 30, 1);
+	glPopMatrix();
+	//glEnable(GL_PROGRAM_POINT_SIZE);
+	glRotated(90.f, 0.f, 1.f, 0.f);
+	glBegin(GL_POINTS);
+	glColor3f(1.f, 0.f, 0.f);
+	glVertex3f(0.3f, 0.3f, 0.3f);
+	//glVertex3f(R * cos((float)(30) / q * PI / 2.0) * cos(2.0 * (float)19 / p * PI),
+	//	R * sin((float)(30) / q * PI / 2.0),
+	//	R * cos((float)(30) / q * PI / 2.0) * sin(2.0 * (float)19 / p * PI));
+	glEnd();
+	glRotated(-90.f, 0.f, 1.f, 0.f);
+	glColor3f(1.f, 1.f, 1.f);
+
+
+	/// Hemisphere at both cylcinder's end position
+	int p = 20;		// # of points consist of circle
+	int q = 20;		// # of vertical stact
+	float R = 0.3;	// radius of hemisphere
+
+	glRotatef(90.f, 0.f, 0.f, 1.f);
+	glTranslatef(0.f, 0.3f, 0.f);
+	for (int j = 0; j < p; j++)
+	{
+		// One latitudinal triangle strip.
+		//glBegin(GL_TRIANGLE_STRIP);
+		glBegin(GL_LINES);
+		glLineWidth(0.3f);
+		for (int i = 0; i <= q; i++)
+		{
+			glVertex3f(R * cos((float)(j + 1) / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
+				R * sin((float)(j + 1) / q * PI / 2.0),
+				R * cos((float)(j + 1) / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
+			glVertex3f(R * cos((float)j / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
+				R * sin((float)j / q * PI / 2.0),
+				R * cos((float)j / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
+		}
+		glEnd();
+	}
+
+	for (int j = 0; j < q; j++)
+	{
+		// One latitudinal triangle strip.
+		//glBegin(GL_TRIANGLE_STRIP);
+		glBegin(GL_TRIANGLE_STRIP_ADJACENCY);
+		glLineWidth(0.5f);
+		for (int i = 0; i <= p; i++)
+		{
+			glVertex3f(R * cos((float)(j + 1) / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
+				R * sin((float)(j + 1) / q * PI / 2.0),
+				R * cos((float)(j + 1) / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
+			glVertex3f(R * cos((float)j / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
+				R * sin((float)j / q * PI / 2.0),
+				R * cos((float)j / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
+		}
+		glEnd();
+	}
+	glTranslatef(0.f, -0.3f, 0.f);
+	glRotatef(-90.f, 0.f, 0.f, 1.f);
+
+	glRotatef(-90.f, 0.f, 0.f, 1.f);
+	glTranslatef(0.f, 0.3f, 0.f);
+	for (int j = 0; j < p; j++)
+	{
+		// One latitudinal triangle strip.
+		//glBegin(GL_TRIANGLE_STRIP);
+		glBegin(GL_LINES);
+		glLineWidth(0.5f);
+		for (int i = 0; i <= q; i++)
+		{
+			glVertex3f(R * cos((float)(j + 1) / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
+				R * sin((float)(j + 1) / q * PI / 2.0),
+				R * cos((float)(j + 1) / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
+			glVertex3f(R * cos((float)j / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
+				R * sin((float)j / q * PI / 2.0),
+				R * cos((float)j / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
+		}
+		glEnd();
+	}
+
+	for (int j = 0; j < q; j++)
+	{
+		// One latitudinal triangle strip.
+		//glBegin(GL_TRIANGLE_STRIP);
+		glBegin(GL_TRIANGLE_STRIP_ADJACENCY);
+		glLineWidth(0.5f);
+		for (int i = 0; i <= p; i++)
+		{
+			glVertex3f(R * cos((float)(j + 1) / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
+				R * sin((float)(j + 1) / q * PI / 2.0),
+				R * cos((float)(j + 1) / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
+			glVertex3f(R * cos((float)j / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
+				R * sin((float)j / q * PI / 2.0),
+				R * cos((float)j / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
+		}
+		glEnd();
+	}
+	glTranslatef(0.f, -0.3f, 0.f);
+	glRotatef(90.f, 0.f, 0.f, 1.f);
+
+
+	/*
+	glPushMatrix();
+	glTranslatef(0.0, 0.0, -0.3f);
+	gluCylinder(pQuad, 0.3, 0.3, 0.3, slices, stacks);
+	glPopMatrix();
+	glTranslatef(0.f, 0.f, 0.3f);
+
+	glPushMatrix();
+	glRotated(90.f, 0.f, 0.f, 1.f);
+	glTranslatef(0.0, 0.0, -0.3f);
+	gluCylinder(pQuad, 0.3, 0.3, 0.3, slices, stacks);
+	glPopMatrix();
+	glTranslatef(0.f, 0.f, 0.3f);
+	glRotated(-90.f, 0.f, 0.f, 1.f);
+
+	glPushMatrix();
+	glTranslatef(0.0, 0.0, 0.3f);
+	glRotated(90.f, 0.f, 0.f, 1.f);
+	gluCylinder(pQuad, 0.3, 0.3, 0.3, slices, stacks);
+	glRotated(-90.f, 0.f, 0.f, 1.f);
+	glTranslatef(0.f, 0.f, -0.3f);
+	glPopMatrix();
+	*/
+
+
+	/*
+	// cylinder top hat using sphere
+	glPushMatrix();
+	//glColor3f(0.f, 0.f, 1.f);
+	glTranslatef(0.f, 0.f, -0.3f);
+	gluSphere(pQuad, 0.3, 20, 20);
+	glPopMatrix();
+
+	// cylinder bottom hat using sphere
+	glPushMatrix();
+	//glColor3f(0.f, 0.f, 1.f);
+	glTranslatef(0.f, 0.f, 0.3f);
+	gluSphere(pQuad, 0.3, 20, 20);
+	glPopMatrix();
+	*/
+
+	/*
+	// make capsule both side hat using hemisphere
+	int p = 20;
+	int q = 20;
+	double PI = 3.14159265;
+	float R = 0.3;
+
+	glRotatef(90.f, 1.f, 0.f, 0.f);
+	for (int j = 0; j < q; j++)
+	{
+	// One latitudinal triangle strip.
+	//glBegin(GL_TRIANGLE_STRIP);
+	glBegin(GL_TRIANGLE_STRIP_ADJACENCY);
+	glLineWidth(0.5f);
+	for (int i = 0; i <= p; i++)
+	{
+	glVertex3f(R * cos((float)(j + 1) / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
+	R * sin((float)(j + 1) / q * PI / 2.0),
+	R * cos((float)(j + 1) / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
+	glVertex3f(R * cos((float)j / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
+	R * sin((float)j / q * PI / 2.0),
+	R * cos((float)j / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
+	}
+	glEnd();
+	}
+	glRotatef(-90.f, 1.f, 0.f, 0.f);
+
+
+	glTranslatef(0.f, 0.f, -0.6f);
+	glRotatef(-90.f, 1.f, 0.f, 0.f);
+	for (int j = 0; j < q; j++)
+	{
+	// One latitudinal triangle strip.
+	//glBegin(GL_TRIANGLE_STRIP);
+	glBegin(GL_TRIANGLE_STRIP_ADJACENCY);
+	for (int i = 0; i <= p; i++)
+	{
+	glVertex3f(R * cos((float)(j + 1) / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
+	R * sin((float)(j + 1) / q * PI / 2.0),
+	R * cos((float)(j + 1) / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
+	glVertex3f(R * cos((float)j / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
+	R * sin((float)j / q * PI / 2.0),
+	R * cos((float)j / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
+	}
+	glEnd();
+	}
+	glTranslatef(0.f, 0.f, -0.6f);
+	glRotatef(-90.f, 1.f, 0.f, 0.f);
+
+
+	gluDeleteQuadric(pQuad);
+	glPopMatrix();
+	*/
+
+	//화면 업데이트
+	SwapBuffers(m_pDC->GetSafeHdc());
 }

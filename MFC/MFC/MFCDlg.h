@@ -4,6 +4,8 @@
 
 #pragma once
 
+#define PI 3.14159265
+
 // include header file with relative path
 #include ".\include\GL\glew.h"
 #include ".\include\GL\wglew.h"
@@ -62,4 +64,7 @@ public:
 	// TODO : test
 public:
 	GLUquadricObj *IDquadric;
+	int m_day;
+	int m_time;
+	void ch_drawCapsule();
 };
