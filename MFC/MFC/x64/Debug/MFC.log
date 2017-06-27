@@ -1,1 +1,29 @@
-﻿
+﻿  MFCDlg.cpp
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(549): warning C4305: 'initializing': truncation from 'double' to 'float'
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(592): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(595): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(608): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(611): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(630): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(633): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(645): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(648): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(697): warning C4305: 'initializing': truncation from 'double' to 'float'
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(740): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(743): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(756): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(759): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(778): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(781): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(793): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(796): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(878): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(881): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(894): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(897): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(916): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(919): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(931): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(934): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+  MFC.vcxproj -> D:\MMMIL\Project\CapsuleEndoscopy\code\cpp\OpenGL\MFC\x64\Debug\MFC.exe
+  MFC.vcxproj -> D:\MMMIL\Project\CapsuleEndoscopy\code\cpp\OpenGL\MFC\x64\Debug\MFC.pdb (Partial PDB)

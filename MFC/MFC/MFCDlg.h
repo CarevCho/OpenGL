@@ -53,7 +53,9 @@ public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 private:
 	HGLRC m_hRC;
+	HGLRC m_hRC2;
 	CDC* m_pDC;
+	CDC* m_pDC2;
 public:
 	BOOL GetRenderingContext();
 protected:
@@ -71,6 +73,8 @@ public:
 	int m_day;
 	int m_time;
 	void ch_drawCapsule();
+	void ch_drawCapsule2();
 	DIRECTION ch_dir;
 	int m_dir;
+	CStatic m_Pdirection_2;
 };

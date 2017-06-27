@@ -65,6 +65,7 @@ void CMFCDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_DIRECTION, m_Pdirection);
+	DDX_Control(pDX, IDC_DIRECTION2, m_Pdirection_2);
 }
 
 BEGIN_MESSAGE_MAP(CMFCDlg, CDialogEx)
@@ -193,10 +194,8 @@ void CMFCDlg::OnTimer(UINT_PTR nIDEvent)
 	// TODO: Add your message handler code here and/or call default
 
 	CDialogEx::OnTimer(nIDEvent);
-
-	
-
 	ch_drawCapsule();
+	//ch_drawCapsule2();
 }
 
 
@@ -205,10 +204,16 @@ BOOL CMFCDlg::GetRenderingContext()
 	//픽처 컨트롤에만 그리도록 DC 생성
 	//참고 https://goo.gl/CK36zE
 	CWnd* pImage = GetDlgItem(IDC_DIRECTION);
-	CRect rc;
-	pImage->GetWindowRect(rc);
-	m_pDC = pImage->GetDC();
+	CWnd* pImage2 = GetDlgItem(IDC_DIRECTION2);
 
+	CRect rc;
+	CRect rc2;
+	pImage->GetWindowRect(rc);
+	pImage->GetWindowRect(rc2);
+	m_pDC = pImage->GetDC();
+	m_pDC2 = pImage2->GetDC();
+
+	
 
 	if (NULL == m_pDC)
 	{
@@ -216,6 +221,10 @@ BOOL CMFCDlg::GetRenderingContext()
 		return FALSE;
 	}
 
+	if (NULL == m_pDC2) {
+		AfxMessageBox(CString("Unable to get a DC"));
+		return FALSE;
+	}
 
 	if (!GetOldStyleRenderingContext())
 	{
@@ -243,11 +252,26 @@ BOOL CMFCDlg::GetRenderingContext()
 		WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
 		0
 	};
-
+	GLint attribs2[] =
+	{
+		// Here we ask for OpenGL 2.1
+		WGL_CONTEXT_MAJOR_VERSION_ARB, 2,
+		WGL_CONTEXT_MINOR_VERSION_ARB, 1,
+		// Uncomment this for forward compatibility mode
+		//WGL_CONTEXT_FLAGS_ARB, WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
+		// Uncomment this for Compatibility profile
+		//WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB,
+		// We are using Core profile here
+		WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
+		0
+	};
 
 	HGLRC CompHRC = wglCreateContextAttribsARB(m_pDC->GetSafeHdc(), 0, attribs);
 	if (CompHRC && wglMakeCurrent(m_pDC->GetSafeHdc(), CompHRC))
 		m_hRC = CompHRC;
+	HGLRC CompHRC2 = wglCreateContextAttribsARB(m_pDC2->GetSafeHdc(), 0, attribs2);
+	if (CompHRC2 && wglMakeCurrent(m_pDC2->GetSafeHdc(), CompHRC2))
+		m_hRC2 = CompHRC2;
 	glClearColor(0.f, 0.f, 0.f, 0.5f);
 
 	return TRUE;
@@ -280,12 +304,39 @@ BOOL CMFCDlg::GetOldStyleRenderingContext()
 		0, 0, 0                         // layer masks ignored
 	};
 
+	static PIXELFORMATDESCRIPTOR pfd2 =
+	{
+		sizeof(PIXELFORMATDESCRIPTOR),
+		1,
+		PFD_DRAW_TO_WINDOW |            // support window
+		PFD_SUPPORT_OPENGL |            // support OpenGL
+		PFD_DOUBLEBUFFER,               // double buffered
+		PFD_TYPE_RGBA,                  // RGBA type
+		32,                             // 32-bit color depth
+		0, 0, 0, 0, 0, 0,               // color bits ignored
+		0,                              // no alpha buffer
+		0,                              // shift bit ignored
+		0,                              // no accumulation buffer
+		0, 0, 0, 0,                     // accum bits ignored
+		24,                        // 24-bit z-buffer
+		0,                              // no stencil buffer
+		0,                              // no auxiliary buffer
+		PFD_MAIN_PLANE,                 // main layer
+		0,                              // reserved
+		0, 0, 0                         // layer masks ignored
+	};
+
 	// Get the id number for the best match supported by the hardware device context
 	// to what is described in pfd
 	int pixelFormat = ChoosePixelFormat(m_pDC->GetSafeHdc(), &pfd);
-
+	int pixelFormat2 = ChoosePixelFormat(m_pDC2->GetSafeHdc(), &pfd2);
 	//If there's no match, report an error
 	if (0 == pixelFormat)
+	{
+		AfxMessageBox(CString("ChoosePixelFormat failed"));
+		return FALSE;
+	}
+	if (0 == pixelFormat2)
 	{
 		AfxMessageBox(CString("ChoosePixelFormat failed"));
 		return FALSE;
@@ -298,8 +349,19 @@ BOOL CMFCDlg::GetOldStyleRenderingContext()
 		return FALSE;
 	}
 
+	if (FALSE == SetPixelFormat(m_pDC2->GetSafeHdc(), pixelFormat2, &pfd2))
+	{
+		AfxMessageBox(CString("SetPixelFormat failed"));
+		return FALSE;
+	}
+
 	//Create a context with this pixel format
 	if (0 == (m_hRC = wglCreateContext(m_pDC->GetSafeHdc())))
+	{
+		AfxMessageBox(CString("wglCreateContext failed"));
+		return FALSE;
+	}
+	if (0 == (m_hRC2 = wglCreateContext(m_pDC2->GetSafeHdc())))
 	{
 		AfxMessageBox(CString("wglCreateContext failed"));
 		return FALSE;
@@ -307,6 +369,12 @@ BOOL CMFCDlg::GetOldStyleRenderingContext()
 
 	//Make it current. 
 	if (FALSE == wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC))
+	{
+		AfxMessageBox(CString("wglMakeCurrent failed"));
+		return FALSE;
+	}
+	//Make it current. 
+	if (FALSE == wglMakeCurrent(m_pDC2->GetSafeHdc(), m_hRC2))
 	{
 		AfxMessageBox(CString("wglMakeCurrent failed"));
 		return FALSE;
@@ -332,14 +400,31 @@ BOOL CMFCDlg::SetupPixelFormat()
 		WGL_STENCIL_BITS_ARB,   8,
 		0, 0  //End
 	};
+	const int attribList2[] =
+	{
+		WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,
+		WGL_SUPPORT_OPENGL_ARB, GL_TRUE,
+		WGL_ACCELERATION_ARB,   WGL_FULL_ACCELERATION_ARB,
+		WGL_DOUBLE_BUFFER_ARB,  GL_TRUE,
+		WGL_PIXEL_TYPE_ARB,     WGL_TYPE_RGBA_ARB,
+		WGL_COLOR_BITS_ARB,     32,
+		WGL_DEPTH_BITS_ARB,     24,
+		WGL_STENCIL_BITS_ARB,   8,
+		0, 0  //End
+	};
 
 
 	unsigned int numFormats;
 	int pixelFormat;
 	PIXELFORMATDESCRIPTOR pfd;
 
+	unsigned int numFormats2;
+	int pixelFormat2;
+	PIXELFORMATDESCRIPTOR pfd2;
+
 	//Select a pixel format number
 	wglChoosePixelFormatARB(m_pDC->GetSafeHdc(), attribList, NULL, 1, &pixelFormat, &numFormats);
+	wglChoosePixelFormatARB(m_pDC2->GetSafeHdc(), attribList2, NULL, 1, &pixelFormat2, &numFormats2);
 
 	//Optional: Get the pixel format's description. We must provide a 
 	//description to SetPixelFormat(), but its contents mean little.
@@ -355,7 +440,11 @@ BOOL CMFCDlg::SetupPixelFormat()
 		AfxMessageBox(CString("SelectPixelFormat failed"));
 		return FALSE;
 	}
-
+	if (FALSE == SetPixelFormat(m_pDC2->GetSafeHdc(), pixelFormat2, &pfd2))
+	{
+		AfxMessageBox(CString("SelectPixelFormat failed"));
+		return FALSE;
+	}
 	return TRUE;
 }
 
@@ -423,14 +512,20 @@ void CMFCDlg::ch_drawCapsule()
 {
 	glClear(GL_COLOR_BUFFER_BIT);	// using double buffer and RGB color model
 	glMatrixMode(GL_MODELVIEW);
+	/*
 	glBegin(GL_LINES);
+		glLoadIdentity();
+		glColor3f(0.f, 1.f, 0.f);
 		glVertex3f(-1.f, 0.f, 0.f);
 		glVertex3f(1.f, 0.f, 0.f);
-		//glVertex3f(0.f, 0.f, -1.f);
-		//glVertex3f(0.f, 0.f, 1.f);
+		glColor3f(1.f, 0.f, 0.f);
+		glVertex3f(0.f, 0.f, -1.f);
+		glVertex3f(0.f, 0.f, 1.f);
+		glColor3f(0.f, 0.f, 1.f);
 		glVertex3f(0.f, -1.f, 0.f);
 		glVertex3f(0.f, 1.f, 0.f);
 	glEnd();
+	*/
 
 	GLUquadricObj *pQuad;
 	pQuad = gluNewQuadric();
@@ -558,4 +653,290 @@ void CMFCDlg::ch_drawCapsule()
 
 	//화면 업데이트
 	SwapBuffers(m_pDC->GetSafeHdc());
+	//SwapBuffers(m_pDC2->GetSafeHdc());
+}
+
+void CMFCDlg::ch_drawCapsule2()
+{
+	glClear(GL_COLOR_BUFFER_BIT);	// using double buffer and RGB color model
+	glMatrixMode(GL_MODELVIEW);
+	/*
+	glBegin(GL_LINES);
+	glLoadIdentity();
+	glColor3f(0.f, 1.f, 0.f);
+	glVertex3f(-1.f, 0.f, 0.f);
+	glVertex3f(1.f, 0.f, 0.f);
+	glColor3f(1.f, 0.f, 0.f);
+	glVertex3f(0.f, 0.f, -1.f);
+	glVertex3f(0.f, 0.f, 1.f);
+	glColor3f(0.f, 0.f, 1.f);
+	glVertex3f(0.f, -1.f, 0.f);
+	glVertex3f(0.f, 1.f, 0.f);
+	glEnd();
+	*/
+
+	GLUquadricObj *pQuad;
+	pQuad = gluNewQuadric();
+	gluQuadricDrawStyle(pQuad, GLU_LINE);
+
+	/**
+	*
+	* gluCylinder make cylinder
+	*
+	* @param baseRadius : radius from current point(base point)
+	* @param topRadius : radius from current point + height(z axis), (top point)
+	* @param height : length of cylinder from basePoint to TopPoint
+	* @param slices : # of vertical lines
+	* @param stacks : # of horizontal lines
+	*/
+	/// Cylindrical illustration
+	int slices = 30;	// horizontal slices
+	int stacks = 10;	// # of vertical stack
+	int p = 20;
+	int q = 20;
+	float R = 0.3;
+
+	switch (m_dir)
+	{
+	case X:
+		glRotatef(m_beta, 1.f, 0.f, 0.f);
+		break;
+	case Y:
+		glRotatef(m_alpha, 0.f, 1.f, 0.f);
+		break;
+	case AX:
+		glLoadIdentity();
+		glRotatef(90, 1.0, 0.0, 0.0);
+		break;
+	case AY:
+		glLoadIdentity();
+		glRotatef(90, 0.0, 1.0, 0.0);
+		break;
+	case AZ:
+		glLoadIdentity();
+		glRotatef(0, 0.0, 0.0, 1.0);
+		break;
+	default:
+		break;
+	}
+	glPushMatrix();
+	glTranslatef(0.f, 0.f, 0.3f);
+	glRotatef(90.f, 1.f, 0.f, 0.f);
+	glColor3f(1.f, 0.f, 0.f);
+	glPointSize(7.f);
+	glBegin(GL_POINTS);
+	glVertex3f(0.f, 0.3f, 0.0f);
+	glEnd();
+	glColor3f(1.f, 1.f, 1.f);
+
+	for (int j = 0; j < q; j++)
+	{
+		// One latitudinal triangle strip.
+		glBegin(GL_TRIANGLE_STRIP_ADJACENCY);
+		for (int i = 0; i <= p; i++)
+		{
+			glVertex3f(R * cos((float)(j + 1) / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
+				R * sin((float)(j + 1) / q * PI / 2.0),
+				R * cos((float)(j + 1) / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
+			glVertex3f(R * cos((float)j / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
+				R * sin((float)j / q * PI / 2.0),
+				R * cos((float)j / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
+		}
+		glEnd();
+	}
+	glColor3f(1.f, 0.f, 0.f);
+	for (int j = 0; j < p; j++)
+	{
+		glBegin(GL_LINES);
+		glLineWidth(0.3f);
+		for (int i = 0; i <= q; i++)
+		{
+			glVertex3f(R * cos((float)(j + 1) / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
+				R * sin((float)(j + 1) / q * PI / 2.0),
+				R * cos((float)(j + 1) / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
+			glVertex3f(R * cos((float)j / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
+				R * sin((float)j / q * PI / 2.0),
+				R * cos((float)j / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
+		}
+		glEnd();
+	}
+	glColor3f(1.f, 1.f, 1.f);
+	glRotatef(-90.f, 1.f, 0.f, 0.f);
+	glTranslatef(0.f, 0.f, -0.3f);
+	gluCylinder(pQuad, 0.3, 0.3, 0.3, slices, stacks);
+	glTranslatef(0.f, 0.f, -0.3f);
+	gluCylinder(pQuad, 0.3, 0.3, 0.3, slices, stacks);
+	glRotatef(-90.f, 1.f, 0.f, 0.f);
+	for (int j = 0; j < q; j++)
+	{
+		// One latitudinal triangle strip.
+		glBegin(GL_TRIANGLE_STRIP_ADJACENCY);
+		for (int i = 0; i <= p; i++)
+		{
+			glVertex3f(R * cos((float)(j + 1) / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
+				R * sin((float)(j + 1) / q * PI / 2.0),
+				R * cos((float)(j + 1) / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
+			glVertex3f(R * cos((float)j / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
+				R * sin((float)j / q * PI / 2.0),
+				R * cos((float)j / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
+		}
+		glEnd();
+	}
+	for (int j = 0; j < p; j++)
+	{
+		glBegin(GL_LINES);
+		glLineWidth(0.3f);
+		for (int i = 0; i <= q; i++)
+		{
+			glVertex3f(R * cos((float)(j + 1) / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
+				R * sin((float)(j + 1) / q * PI / 2.0),
+				R * cos((float)(j + 1) / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
+			glVertex3f(R * cos((float)j / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
+				R * sin((float)j / q * PI / 2.0),
+				R * cos((float)j / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
+		}
+		glEnd();
+	}
+	glPopMatrix();
+
+	//화면 업데이트
+	SwapBuffers(m_pDC->GetSafeHdc());
+
+	//glClear(GL_COLOR_BUFFER_BIT);	// using double buffer and RGB color model
+	//glMatrixMode(GL_MODELVIEW);
+	/*
+	glBegin(GL_LINES);
+	glLoadIdentity();
+	glColor3f(0.f, 1.f, 0.f);
+	glVertex3f(-1.f, 0.f, 0.f);
+	glVertex3f(1.f, 0.f, 0.f);
+	glColor3f(1.f, 0.f, 0.f);
+	glVertex3f(0.f, 0.f, -1.f);
+	glVertex3f(0.f, 0.f, 1.f);
+	glColor3f(0.f, 0.f, 1.f);
+	glVertex3f(0.f, -1.f, 0.f);
+	glVertex3f(0.f, 1.f, 0.f);
+	glEnd();
+	*/
+
+	pQuad = gluNewQuadric();
+	gluQuadricDrawStyle(pQuad, GLU_LINE);
+
+	/**
+	*
+	* gluCylinder make cylinder
+	*
+	* @param baseRadius : radius from current point(base point)
+	* @param topRadius : radius from current point + height(z axis), (top point)
+	* @param height : length of cylinder from basePoint to TopPoint
+	* @param slices : # of vertical lines
+	* @param stacks : # of horizontal lines
+	*/
+	/// Cylindrical illustration
+	
+	switch (m_dir)
+	{
+	case X:
+		glRotatef(m_beta, 1.f, 0.f, 0.f);
+		break;
+	case Y:
+		glRotatef(m_alpha, 0.f, 1.f, 0.f);
+		break;
+	case AX:
+		glLoadIdentity();
+		glRotatef(90, 1.0, 0.0, 0.0);
+		break;
+	case AY:
+		glLoadIdentity();
+		glRotatef(90, 0.0, 1.0, 0.0);
+		break;
+	case AZ:
+		glLoadIdentity();
+		glRotatef(0, 0.0, 0.0, 1.0);
+		break;
+	default:
+		break;
+	}
+	glPushMatrix();
+	glTranslatef(0.f, 0.f, 0.3f);
+	glRotatef(90.f, 1.f, 0.f, 0.f);
+	glColor3f(1.f, 0.f, 0.f);
+	glPointSize(7.f);
+	glBegin(GL_POINTS);
+	glVertex3f(0.f, 0.3f, 0.0f);
+	glEnd();
+	glColor3f(1.f, 1.f, 1.f);
+
+	for (int j = 0; j < q; j++)
+	{
+		// One latitudinal triangle strip.
+		glBegin(GL_TRIANGLE_STRIP_ADJACENCY);
+		for (int i = 0; i <= p; i++)
+		{
+			glVertex3f(R * cos((float)(j + 1) / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
+				R * sin((float)(j + 1) / q * PI / 2.0),
+				R * cos((float)(j + 1) / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
+			glVertex3f(R * cos((float)j / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
+				R * sin((float)j / q * PI / 2.0),
+				R * cos((float)j / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
+		}
+		glEnd();
+	}
+	glColor3f(1.f, 0.f, 0.f);
+	for (int j = 0; j < p; j++)
+	{
+		glBegin(GL_LINES);
+		glLineWidth(0.3f);
+		for (int i = 0; i <= q; i++)
+		{
+			glVertex3f(R * cos((float)(j + 1) / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
+				R * sin((float)(j + 1) / q * PI / 2.0),
+				R * cos((float)(j + 1) / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
+			glVertex3f(R * cos((float)j / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
+				R * sin((float)j / q * PI / 2.0),
+				R * cos((float)j / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
+		}
+		glEnd();
+	}
+	glColor3f(1.f, 1.f, 1.f);
+	glRotatef(-90.f, 1.f, 0.f, 0.f);
+	glTranslatef(0.f, 0.f, -0.3f);
+	gluCylinder(pQuad, 0.3, 0.3, 0.3, slices, stacks);
+	glTranslatef(0.f, 0.f, -0.3f);
+	gluCylinder(pQuad, 0.3, 0.3, 0.3, slices, stacks);
+	glRotatef(-90.f, 1.f, 0.f, 0.f);
+	for (int j = 0; j < q; j++)
+	{
+		// One latitudinal triangle strip.
+		glBegin(GL_TRIANGLE_STRIP_ADJACENCY);
+		for (int i = 0; i <= p; i++)
+		{
+			glVertex3f(R * cos((float)(j + 1) / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
+				R * sin((float)(j + 1) / q * PI / 2.0),
+				R * cos((float)(j + 1) / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
+			glVertex3f(R * cos((float)j / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
+				R * sin((float)j / q * PI / 2.0),
+				R * cos((float)j / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
+		}
+		glEnd();
+	}
+	for (int j = 0; j < p; j++)
+	{
+		glBegin(GL_LINES);
+		glLineWidth(0.3f);
+		for (int i = 0; i <= q; i++)
+		{
+			glVertex3f(R * cos((float)(j + 1) / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
+				R * sin((float)(j + 1) / q * PI / 2.0),
+				R * cos((float)(j + 1) / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
+			glVertex3f(R * cos((float)j / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
+				R * sin((float)j / q * PI / 2.0),
+				R * cos((float)j / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
+		}
+		glEnd();
+	}
+	glPopMatrix();
+
+	SwapBuffers(m_pDC2->GetSafeHdc());
+
 }
