@@ -17,10 +17,6 @@
 #pragma comment(lib, "freeglut.lib")
 #pragma comment(lib, "glew32.lib")
 
-enum DIRECTION { 
-	X, Y, AX, AY, AZ
-};
-
 // CMFCDlg dialog
 class CMFCDlg : public CDialogEx
 {
@@ -73,8 +69,6 @@ public:
 	int m_day;
 	int m_time;
 	void ch_drawCapsule();
-	void ch_drawCapsule2();
 	DIRECTION ch_dir;
 	int m_dir;
-	CStatic m_Pdirection_2;
 };

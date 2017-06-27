@@ -117,10 +117,6 @@ BOOL CMFCDlg::OnInitDialog()
 		return -1;
 	}
 
-	glClear(GL_COLOR_BUFFER_BIT);	// using double buffer and RGB color model
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	
 	SetTimer(1000, 30, NULL);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
@@ -194,8 +190,10 @@ void CMFCDlg::OnTimer(UINT_PTR nIDEvent)
 	// TODO: Add your message handler code here and/or call default
 
 	CDialogEx::OnTimer(nIDEvent);
+
+	
+
 	ch_drawCapsule();
-	//ch_drawCapsule2();
 }
 
 
@@ -269,9 +267,6 @@ BOOL CMFCDlg::GetRenderingContext()
 	HGLRC CompHRC = wglCreateContextAttribsARB(m_pDC->GetSafeHdc(), 0, attribs);
 	if (CompHRC && wglMakeCurrent(m_pDC->GetSafeHdc(), CompHRC))
 		m_hRC = CompHRC;
-	HGLRC CompHRC2 = wglCreateContextAttribsARB(m_pDC2->GetSafeHdc(), 0, attribs2);
-	if (CompHRC2 && wglMakeCurrent(m_pDC2->GetSafeHdc(), CompHRC2))
-		m_hRC2 = CompHRC2;
 	glClearColor(0.f, 0.f, 0.f, 0.5f);
 
 	return TRUE;
@@ -456,48 +451,28 @@ BOOL CMFCDlg::PreTranslateMessage(MSG* pMsg)
 		switch (pMsg->wParam)
 		{
 		case 65:
-			m_alpha = 4;
-			m_dir = 1;
+			m_alpha += 4;
+			break;
+		case 66:
+			m_beta += 4;
+			break;
+		case 67:
+			m_gamma += 4;
 			break;
 		case 68:
-			m_alpha = -4;
-			m_dir = 1;
+			m_alpha = 90.f;
+			m_beta = 0.f;
+			m_gamma = 0.f;
 			break;
-		case 87:
-			m_beta = -4;
-			m_dir = 0;
+		case 69:
+			m_alpha = 0.f;
+			m_beta = 90.f;
+			m_gamma = 0.f;
 			break;
-		case 83:
-			m_beta = 4;
-			m_dir = 0;
-			break;
-		case 49:
-			m_dir = 2;
-			break;
-		case 50:
-			m_dir = 3;
-			break;
-		case 51:
-			m_dir = 4;
-			break;
-		default:
-			break;
-		}
-	}
-	if (pMsg->message == WM_KEYUP) {
-		switch (pMsg->wParam)
-		{
-		case 65:
-			m_dir = 5;
-			break;
-		case 68:
-			m_dir = 5;
-			break;
-		case 87:
-			m_dir = 5;
-			break;
-		case 83:
-			m_dir = 5;
+		case 70:
+			m_alpha = 0.f;
+			m_beta = 0.f;
+			m_gamma = 90.f;
 			break;
 		default:
 			break;
@@ -511,26 +486,20 @@ BOOL CMFCDlg::PreTranslateMessage(MSG* pMsg)
 void CMFCDlg::ch_drawCapsule()
 {
 	glClear(GL_COLOR_BUFFER_BIT);	// using double buffer and RGB color model
+
 	glMatrixMode(GL_MODELVIEW);
-	/*
 	glBegin(GL_LINES);
-		glLoadIdentity();
-		glColor3f(0.f, 1.f, 0.f);
 		glVertex3f(-1.f, 0.f, 0.f);
 		glVertex3f(1.f, 0.f, 0.f);
-		glColor3f(1.f, 0.f, 0.f);
-		glVertex3f(0.f, 0.f, -1.f);
-		glVertex3f(0.f, 0.f, 1.f);
-		glColor3f(0.f, 0.f, 1.f);
+		//glVertex3f(0.f, 0.f, -1.f);
+		//glVertex3f(0.f, 0.f, 1.f);
 		glVertex3f(0.f, -1.f, 0.f);
 		glVertex3f(0.f, 1.f, 0.f);
 	glEnd();
-	*/
 
 	GLUquadricObj *pQuad;
 	pQuad = gluNewQuadric();
 	gluQuadricDrawStyle(pQuad, GLU_LINE);
-
 	/**
 	*
 	* gluCylinder make cylinder
@@ -543,34 +512,24 @@ void CMFCDlg::ch_drawCapsule()
 	*/
 	/// Cylindrical illustration
 	int slices = 30;	// horizontal slices
-	int stacks = 10;	// # of vertical stack
-	int p = 20;
-	int q = 20;
-	float R = 0.3;
+	int stacks = 20;	// # of vertical stack
 
-	switch (m_dir)
-	{
-	case X:
-		glRotatef(m_beta, 1.f, 0.f, 0.f);
-		break;
-	case Y:
-		glRotatef(m_alpha, 0.f, 1.f, 0.f);
-		break;
-	case AX:
-		glLoadIdentity();
-		glRotatef(90, 1.0, 0.0, 0.0);
-		break;
-	case AY:
-		glLoadIdentity();
-		glRotatef(90, 0.0, 1.0, 0.0);
-		break;
-	case AZ:
-		glLoadIdentity();
-		glRotatef(0, 0.0, 0.0, 1.0);
-		break;
-	default:
-		break;
-	}
+	glPushMatrix();
+	glRotated(90.f, 0.f, 1.f, 0.f);
+	gluCylinder(pQuad, 0.3, 0.3, 0.3, slices, stacks);
+	glRotated(-90.f, 0.f, 1.f, 0.f);
+	glPopMatrix();
+
+	glPushMatrix();
+	glLoadIdentity();
+	glRotated(90.f, 0.f, 1.f, 0.f);
+	glTranslatef(0.f, 0.f, -0.3f);
+	gluCylinder(pQuad, 0.3, 0.3, 0.3, slices, stacks);
+	glPopMatrix();
+	/// Cylinder end
+
+	glEnable(GL_POINT_SMOOTH);
+	glPointSize(3.f);
 	glPushMatrix();
 		glTranslatef(0.f, 0.f, 0.3f);
 		glRotatef(90.f, 1.f, 0.f, 0.f);
@@ -650,154 +609,7 @@ void CMFCDlg::ch_drawCapsule()
 			glEnd();
 		}
 	glPopMatrix();
-
-	//화면 업데이트
-	SwapBuffers(m_pDC->GetSafeHdc());
-	//SwapBuffers(m_pDC2->GetSafeHdc());
-}
-
-void CMFCDlg::ch_drawCapsule2()
-{
-	glClear(GL_COLOR_BUFFER_BIT);	// using double buffer and RGB color model
-	glMatrixMode(GL_MODELVIEW);
-	/*
-	glBegin(GL_LINES);
-	glLoadIdentity();
-	glColor3f(0.f, 1.f, 0.f);
-	glVertex3f(-1.f, 0.f, 0.f);
-	glVertex3f(1.f, 0.f, 0.f);
-	glColor3f(1.f, 0.f, 0.f);
-	glVertex3f(0.f, 0.f, -1.f);
-	glVertex3f(0.f, 0.f, 1.f);
-	glColor3f(0.f, 0.f, 1.f);
-	glVertex3f(0.f, -1.f, 0.f);
-	glVertex3f(0.f, 1.f, 0.f);
-	glEnd();
 	*/
-
-	GLUquadricObj *pQuad;
-	pQuad = gluNewQuadric();
-	gluQuadricDrawStyle(pQuad, GLU_LINE);
-
-	/**
-	*
-	* gluCylinder make cylinder
-	*
-	* @param baseRadius : radius from current point(base point)
-	* @param topRadius : radius from current point + height(z axis), (top point)
-	* @param height : length of cylinder from basePoint to TopPoint
-	* @param slices : # of vertical lines
-	* @param stacks : # of horizontal lines
-	*/
-	/// Cylindrical illustration
-	int slices = 30;	// horizontal slices
-	int stacks = 10;	// # of vertical stack
-	int p = 20;
-	int q = 20;
-	float R = 0.3;
-
-	switch (m_dir)
-	{
-	case X:
-		glRotatef(m_beta, 1.f, 0.f, 0.f);
-		break;
-	case Y:
-		glRotatef(m_alpha, 0.f, 1.f, 0.f);
-		break;
-	case AX:
-		glLoadIdentity();
-		glRotatef(90, 1.0, 0.0, 0.0);
-		break;
-	case AY:
-		glLoadIdentity();
-		glRotatef(90, 0.0, 1.0, 0.0);
-		break;
-	case AZ:
-		glLoadIdentity();
-		glRotatef(0, 0.0, 0.0, 1.0);
-		break;
-	default:
-		break;
-	}
-	glPushMatrix();
-	glTranslatef(0.f, 0.f, 0.3f);
-	glRotatef(90.f, 1.f, 0.f, 0.f);
-	glColor3f(1.f, 0.f, 0.f);
-	glPointSize(7.f);
-	glBegin(GL_POINTS);
-	glVertex3f(0.f, 0.3f, 0.0f);
-	glEnd();
-	glColor3f(1.f, 1.f, 1.f);
-
-	for (int j = 0; j < q; j++)
-	{
-		// One latitudinal triangle strip.
-		glBegin(GL_TRIANGLE_STRIP_ADJACENCY);
-		for (int i = 0; i <= p; i++)
-		{
-			glVertex3f(R * cos((float)(j + 1) / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
-				R * sin((float)(j + 1) / q * PI / 2.0),
-				R * cos((float)(j + 1) / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
-			glVertex3f(R * cos((float)j / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
-				R * sin((float)j / q * PI / 2.0),
-				R * cos((float)j / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
-		}
-		glEnd();
-	}
-	glColor3f(1.f, 0.f, 0.f);
-	for (int j = 0; j < p; j++)
-	{
-		glBegin(GL_LINES);
-		glLineWidth(0.3f);
-		for (int i = 0; i <= q; i++)
-		{
-			glVertex3f(R * cos((float)(j + 1) / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
-				R * sin((float)(j + 1) / q * PI / 2.0),
-				R * cos((float)(j + 1) / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
-			glVertex3f(R * cos((float)j / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
-				R * sin((float)j / q * PI / 2.0),
-				R * cos((float)j / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
-		}
-		glEnd();
-	}
-	glColor3f(1.f, 1.f, 1.f);
-	glRotatef(-90.f, 1.f, 0.f, 0.f);
-	glTranslatef(0.f, 0.f, -0.3f);
-	gluCylinder(pQuad, 0.3, 0.3, 0.3, slices, stacks);
-	glTranslatef(0.f, 0.f, -0.3f);
-	gluCylinder(pQuad, 0.3, 0.3, 0.3, slices, stacks);
-	glRotatef(-90.f, 1.f, 0.f, 0.f);
-	for (int j = 0; j < q; j++)
-	{
-		// One latitudinal triangle strip.
-		glBegin(GL_TRIANGLE_STRIP_ADJACENCY);
-		for (int i = 0; i <= p; i++)
-		{
-			glVertex3f(R * cos((float)(j + 1) / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
-				R * sin((float)(j + 1) / q * PI / 2.0),
-				R * cos((float)(j + 1) / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
-			glVertex3f(R * cos((float)j / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
-				R * sin((float)j / q * PI / 2.0),
-				R * cos((float)j / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
-		}
-		glEnd();
-	}
-	for (int j = 0; j < p; j++)
-	{
-		glBegin(GL_LINES);
-		glLineWidth(0.3f);
-		for (int i = 0; i <= q; i++)
-		{
-			glVertex3f(R * cos((float)(j + 1) / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
-				R * sin((float)(j + 1) / q * PI / 2.0),
-				R * cos((float)(j + 1) / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
-			glVertex3f(R * cos((float)j / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
-				R * sin((float)j / q * PI / 2.0),
-				R * cos((float)j / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
-		}
-		glEnd();
-	}
-	glPopMatrix();
 
 	//화면 업데이트
 	SwapBuffers(m_pDC->GetSafeHdc());
