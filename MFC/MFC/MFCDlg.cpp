@@ -528,6 +528,7 @@ void CMFCDlg::ch_drawCapsule()
 	glPopMatrix();
 	/// Cylinder end
 
+	/*
 	glEnable(GL_POINT_SMOOTH);
 	glPointSize(3.f);
 	glPushMatrix();

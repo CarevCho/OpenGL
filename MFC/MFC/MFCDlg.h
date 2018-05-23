@@ -10,12 +10,16 @@
 #include ".\include\GL\glew.h"
 #include ".\include\GL\wglew.h"
 #include ".\include\GL\freeglut.h"
-#include ".\include\GL\freeglut_ext.h"
+//#include ".\include\GL\freeglut_ext.h"
 #include "afxwin.h"
 
 // setting library to use
 #pragma comment(lib, "freeglut.lib")
 #pragma comment(lib, "glew32.lib")
+
+enum DIRECTION {
+	X = 0, Y, AX, AY, AZ
+};
 
 // CMFCDlg dialog
 class CMFCDlg : public CDialogEx
@@ -72,3 +76,4 @@ public:
 	DIRECTION ch_dir;
 	int m_dir;
 };
+

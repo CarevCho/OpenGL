@@ -1,0 +1,82 @@
+﻿  MFCDlg.cpp
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(68): error C2065: 'm_Pdirection_2': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(683): error C2065: 'q': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(687): error C2065: 'p': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(689): error C2065: 'R': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(689): error C2065: 'q': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(689): error C2065: 'p': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(690): error C2065: 'R': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(690): error C2065: 'q': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(691): error C2065: 'R': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(691): error C2065: 'q': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(691): error C2065: 'p': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(691): error C2660: 'glVertex3f': function does not take 1 arguments
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(692): error C2065: 'R': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(692): error C2065: 'q': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(692): error C2065: 'p': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(693): error C2065: 'R': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(693): error C2065: 'q': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(694): error C2065: 'R': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(694): error C2065: 'q': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(694): error C2065: 'p': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(694): error C2660: 'glVertex3f': function does not take 1 arguments
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(699): error C2065: 'p': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(703): error C2065: 'q': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(705): error C2065: 'R': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(705): error C2065: 'q': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(705): error C2065: 'p': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(706): error C2065: 'R': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(706): error C2065: 'q': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(707): error C2065: 'R': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(707): error C2065: 'q': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(707): error C2065: 'p': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(707): error C2660: 'glVertex3f': function does not take 1 arguments
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(708): error C2065: 'R': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(708): error C2065: 'q': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(708): error C2065: 'p': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(709): error C2065: 'R': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(709): error C2065: 'q': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(710): error C2065: 'R': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(710): error C2065: 'q': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(710): error C2065: 'p': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(710): error C2660: 'glVertex3f': function does not take 1 arguments
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(721): error C2065: 'q': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(725): error C2065: 'p': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(727): error C2065: 'R': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(727): error C2065: 'q': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(727): error C2065: 'p': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(728): error C2065: 'R': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(728): error C2065: 'q': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(729): error C2065: 'R': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(729): error C2065: 'q': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(729): error C2065: 'p': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(729): error C2660: 'glVertex3f': function does not take 1 arguments
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(730): error C2065: 'R': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(730): error C2065: 'q': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(730): error C2065: 'p': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(731): error C2065: 'R': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(731): error C2065: 'q': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(732): error C2065: 'R': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(732): error C2065: 'q': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(732): error C2065: 'p': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(732): error C2660: 'glVertex3f': function does not take 1 arguments
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(736): error C2065: 'p': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(740): error C2065: 'q': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(742): error C2065: 'R': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(742): error C2065: 'q': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(742): error C2065: 'p': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(743): error C2065: 'R': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(743): error C2065: 'q': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(744): error C2065: 'R': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(744): error C2065: 'q': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(744): error C2065: 'p': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(744): error C2660: 'glVertex3f': function does not take 1 arguments
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(745): error C2065: 'R': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(745): error C2065: 'q': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(745): error C2065: 'p': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(746): error C2065: 'R': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(746): error C2065: 'q': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(747): error C2065: 'R': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(747): error C2065: 'q': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(747): error C2065: 'p': undeclared identifier
+d:\mmmil\project\capsuleendoscopy\code\cpp\opengl\mfc\mfc\mfcdlg.cpp(747): error C2660: 'glVertex3f': function does not take 1 arguments
