@@ -188,105 +188,13 @@ void CMFCDlg::OnTimer(UINT_PTR nIDEvent)
 
 	CDialogEx::OnTimer(nIDEvent);
 
-	glClear(GL_COLOR_BUFFER_BIT);
-
-	glPushMatrix();
-	glRotatef(m_alpha, 1.f, 0.f, 0.f);
-	glRotatef(m_beta, 0.f, 1.f, 0.f);
-	glRotatef(m_gamma, 0.f, 0.f, 1.f);
-
-	GLUquadricObj *pQuad;
-	pQuad = gluNewQuadric();
-	gluQuadricDrawStyle(pQuad, GLU_FILL);
-
-	// TODO : test cylindrical image
-	glPushMatrix();
-	gluCylinder(pQuad, 0.3, 0.3, 0.3, 20, 20);
-	//gluCylinder(pQuad, 0.5, 0.5, -0.3, 20, 20);
-	glPopMatrix();
-
-	glPushMatrix();
-	glTranslatef(0.0, 0.0, -0.3f);
-	//gluCylinder(pQuad, 0.3, 0.3, 0.3, 20, 20);
-	gluCylinder(pQuad, 0.3, 0.3, 0.3, 20, 20);
-	glPopMatrix();
-	/*
-	// TODO : cylinder top hat
-	glPushMatrix();
-	//glColor3f(0.f, 0.f, 1.f);
-	glTranslatef(0.f, 0.f, -0.3f);
-	gluSphere(pQuad, 0.3, 20, 20);
-	glPopMatrix();
 	
-	// TODO : cylinder bottom hat
-	glPushMatrix();
-	//glColor3f(0.f, 0.f, 1.f);
-	glTranslatef(0.f, 0.f, 0.3f);
-	gluSphere(pQuad, 0.3, 20, 20);
-	glPopMatrix();
-	*/
-	int p = 20;
-	int q = 30;
-	double PI = 3.14159265;
-	float R = 0.3;
 
-	glTranslatef(0.f, 0.f, 0.3f);
-	glRotatef(90.f, 1.f, 0.f, 0.f);
-	for (int j = 0; j < q; j++)
-	{
-		// One latitudinal triangle strip.
-		glBegin(GL_TRIANGLE_STRIP);
-		//glBegin(GL_TRIANGLE_STRIP_ADJACENCY);
-		glLineWidth(0.5f);
-		for (int i = 0; i <= p; i++)
-		{
-			glVertex3f(R * cos((float)(j + 1) / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
-				R * sin((float)(j + 1) / q * PI / 2.0),
-				R * cos((float)(j + 1) / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
-			glVertex3f(R * cos((float)j / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
-				R * sin((float)j / q * PI / 2.0),
-				R * cos((float)j / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
-		}
-		glEnd();
-	}
-	glRotatef(-90.f, 1.f, 0.f, 0.f);
-
-
-	glTranslatef(0.f, 0.f, -0.6f);
-	glRotatef(-90.f, 1.f, 0.f, 0.f);
-	for (int j = 0; j < q; j++)
-	{
-		// One latitudinal triangle strip.
-		glBegin(GL_TRIANGLE_STRIP);
-		//glBegin(GL_TRIANGLE_STRIP_ADJACENCY);
-		for (int i = 0; i <= p; i++)
-		{
-			glVertex3f(R * cos((float)(j + 1) / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
-				R * sin((float)(j + 1) / q * PI / 2.0),
-				R * cos((float)(j + 1) / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
-			glVertex3f(R * cos((float)j / q * PI / 2.0) * cos(2.0 * (float)i / p * PI),
-				R * sin((float)j / q * PI / 2.0),
-				R * cos((float)j / q * PI / 2.0) * sin(2.0 * (float)i / p * PI));
-		}
-		glEnd();
-	}
-
-	
-	gluDeleteQuadric(pQuad);
-	glPopMatrix();
-
-	/*
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glMatrixMode(GL_PROJECTION);	// 투영을 위한 행렬 변환
 	glLoadIdentity();				// 행렬처리가 이루어지기 전, 좌표계 초기화 ( 0 ~ 1 range )
-	
-	glBegin(GL_POLYGON);
-	glColor3f(1.f, 1.f, 1.f);
-	GLUquadricObj *obj = gluNewQuadric();
-	gluCylinder(obj, 5, 5, 3, 30, 30);
-	glEnd();
-	/*
+
 	//glRotatef(angle, 0.0f, 0.0f, 1.0f);
 	glRotatef(m_alpha, 1.f, 0.f, 0.f);
 	glRotatef(m_beta, 0.f, 1.f, 0.f);
@@ -303,7 +211,6 @@ void CMFCDlg::OnTimer(UINT_PTR nIDEvent)
 	glColor3f(0.0f, 0.0f, 1.0f); //파란색 지정
 	glVertex3f(0.0f, 0.5f, 0.0f);    // 위쪽 vertex
 	glEnd();
-	*/
 	
 	//화면 업데이트
 	SwapBuffers(m_pDC->GetSafeHdc());
@@ -476,13 +383,13 @@ BOOL CMFCDlg::PreTranslateMessage(MSG* pMsg)
 		switch (pMsg->wParam)
 		{
 		case 65:
-			m_alpha += 4;
+			m_alpha += 5;
 			break;
 		case 66:
-			m_beta += 4;
+			m_beta += 5;
 			break;
 		case 67:
-			m_gamma += 4;
+			m_gamma += 5;
 			break;
 		default:
 			break;

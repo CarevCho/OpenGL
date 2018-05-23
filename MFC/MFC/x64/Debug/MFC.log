@@ -1,13 +1,3 @@
-﻿  stdafx.cpp
-c:\program files (x86)\microsoft visual studio 14.0\vc\atlmfc\include\afx.h(38): warning C4996: 'MBCS_Support_Deprecated_In_MFC': MBCS support in MFC is deprecated and may be removed in a future version of MFC.
-  c:\program files (x86)\microsoft visual studio 14.0\vc\atlmfc\include\afx.h(33): note: see declaration of 'MBCS_Support_Deprecated_In_MFC'
-  MFCDlg.cpp
-d:\mmmil\project\capsuleendoscopy\opengl\mfc\mfc\mfcdlg.cpp(231): warning C4305: 'initializing': truncation from 'double' to 'float'
-d:\mmmil\project\capsuleendoscopy\opengl\mfc\mfc\mfcdlg.cpp(245): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-d:\mmmil\project\capsuleendoscopy\opengl\mfc\mfc\mfcdlg.cpp(248): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-d:\mmmil\project\capsuleendoscopy\opengl\mfc\mfc\mfcdlg.cpp(266): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-d:\mmmil\project\capsuleendoscopy\opengl\mfc\mfc\mfcdlg.cpp(269): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-  MFC.cpp
-  Generating Code...
+﻿  MFCDlg.cpp
   MFC.vcxproj -> D:\MMMIL\project\CapsuleEndoscopy\OpenGL\MFC\x64\Debug\MFC.exe
   MFC.vcxproj -> D:\MMMIL\project\CapsuleEndoscopy\OpenGL\MFC\x64\Debug\MFC.pdb (Partial PDB)
